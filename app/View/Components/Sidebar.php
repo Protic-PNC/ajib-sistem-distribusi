@@ -18,7 +18,7 @@ class Sidebar extends Component
             [
                 "text" => "Dashboard",
                 "icon" => "chart-bar-fill",
-                "link" => route('home', [], false)
+                "link" => route('dashboard', [], false)
             ],
             [
                 "text" => "Pages",

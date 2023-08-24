@@ -21,9 +21,9 @@ class BrokerService
 
     function __construct()
     {
-        $this->serverUrl = env('SSO_SERVER');
-        $this->clientId = env('SSO_CLIENT_ID');
-        $this->clientSecret = env('SSO_CLIENT_SECRET');
+        $this->serverUrl = env('SSO_SERVER', '');
+        $this->clientId = env('SSO_CLIENT_ID', '');
+        $this->clientSecret = env('SSO_CLIENT_SECRET', '');
         $this->redirectUri = route('sso.callback');
 
         if (!$this->serverUrl || !$this->clientId || !$this->clientSecret) {
@@ -39,14 +39,12 @@ class BrokerService
      *
      * @return string
      */
-    protected function request(string $path, string $method = "GET", mixed $data = [])
+    protected function request(string $path, string $method = "GET", mixed $data = [], $token = true)
     {
         $token = $this->getToken();
 
-        $headers = [
-            "Authorization" => "Bearer " . $token["access_token"],
-            "Accept" => "application/json"
-        ];
+        $headers = ["Accept" => "application/json"];
+        if ($token) $headers["Authorization"] = "Bearer " . $token["access_token"];
 
         $http = Http::baseUrl($this->serverUrl)->withHeaders($headers)->throw();
 
@@ -56,7 +54,7 @@ class BrokerService
                 return $res->json();
                 break;
             case "POST":
-                $res = $http->asForm($data)->post($path);
+                $res = $http->asForm()->post($path, $data);
                 return $res->json();
                 break;
             default:
@@ -103,18 +101,18 @@ class BrokerService
         $_state = request()->session()->pull("sso_state");
 
         if (!isset($code) || strlen($code) < 1) {
-            return redirect('/')->withErrors(["message" => "Missing callback code."]);
+            return redirect(route('home'))->withErrors(["message" => "Missing callback code."]);
         }
 
         if ($_state !== $state) {
-            return redirect('/')->withErrors(["message" => "Invalid state."]);
+            return redirect(route('home'))->withErrors(["message" => "Invalid state."]);
         }
 
         $token = $this->retrieveToken($code);
         $this->setToken($token);
         $this->getUser();
 
-        return redirect('/');
+        return redirect(route('dashboard'));
     }
 
     public function retrieveToken(string $code)
@@ -125,14 +123,14 @@ class BrokerService
             'client_secret' => $this->clientSecret,
             'redirect_uri' => $this->redirectUri,
             'code' => $code,
-        ]);
+        ], false);
 
         return $data;
     }
 
     private function getToken()
     {
-        if (!isset($this->token) ||  is_null($this->token)) {
+        if (!isset($this->token) || is_null($this->token)) {
             $this->token = request()->session()->get(BrokerService::SESSION_KEY);
         }
 
@@ -169,6 +167,6 @@ class BrokerService
         request()->session()->remove(BrokerService::SESSION_KEY);
         request()->session()->remove(BrokerService::SESSION_USER_KEY);
 
-        return redirect('/');
+        return redirect(route('home'));
     }
 }

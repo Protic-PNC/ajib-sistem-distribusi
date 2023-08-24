@@ -19,12 +19,12 @@ class OAuthController extends Controller
         return $this->brokerService->handleCallback($req->code, $req->state);
     }
 
-    public function user(Request $req)
+    public function user()
     {
         return $this->brokerService->getUser();
     }
 
-    public function logout(Request $req)
+    public function logout()
     {
         return $this->brokerService->logout();
     }

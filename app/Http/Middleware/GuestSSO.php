@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthenticateSSO
+class GuestSSO
 {
     function __construct()
     {
@@ -22,9 +22,9 @@ class AuthenticateSSO
     {
         $cred = $request->session()->get(BrokerService::SESSION_KEY);
         if (is_null($cred) || !$cred) {
-            return redirect(route('home'));
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect(route('dashboard'));
     }
 }

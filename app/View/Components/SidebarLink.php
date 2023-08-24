@@ -25,10 +25,9 @@ class SidebarLink extends Component
         $this->id = Str::of($this->text)->slug() . "-" . Str::random(5);
     }
 
-
     public function isActive(?string $link)
     {
-        return $link ? request()->is($link) : false;
+        return is_null($link) ? false : request()->is(substr($link, 1));
     }
 
     public function isChildrenActive()

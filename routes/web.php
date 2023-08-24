@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.dashboard');
-})->name('home');
-// ->middleware("auth.sso");
+Route::middleware('guest.sso')->group(function () {
+    Route::get('/', fn () => view("login"))->name("home");
+    Route::get('/login', LoginController::class)->name("login");
+});
+
+Route::middleware('auth.sso')->group(function () {
+    Route::get('/dashboard', DashboardController::class)->middleware('auth.sso')->name("dashboard");
+});
