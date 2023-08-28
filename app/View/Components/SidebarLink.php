@@ -20,12 +20,13 @@ class SidebarLink extends Component
         public ?string $link,
         public ?string $icon,
         public bool $divider = false,
-        public array $children = []
+        public array $children = [],
+        public bool $external = false,
     ) {
         $this->id = Str::of($this->text)->slug() . "-" . Str::random(5);
     }
 
-    public function isActive(?string $link)
+    public function matchCurrentRoute(?string $link)
     {
         return is_null($link) ? false : request()->is(substr($link, 1));
     }
@@ -33,7 +34,7 @@ class SidebarLink extends Component
     public function isChildrenActive()
     {
         foreach ($this->children as $child) {
-            if ($this->isActive($child["link"])) {
+            if ($this->matchCurrentRoute($child["link"])) {
                 return true;
             }
         }

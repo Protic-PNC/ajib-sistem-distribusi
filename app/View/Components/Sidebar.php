@@ -21,18 +21,9 @@ class Sidebar extends Component
                 "link" => route('dashboard', [], false)
             ],
             [
-                "text" => "Pages",
-                "icon" => "bag-fill",
-                "children" => [
-                    [
-                        "text" => "Orders",
-                        "link" => "/orders"
-                    ],
-                    [
-                        "text" => "Products",
-                        "link" => "/products"
-                    ]
-                ]
+                "text" => "Produk",
+                "icon" => "circles-three-plus-fill",
+                "link" => route('products', [], false)
             ],
             [
                 "text" => "Messages",

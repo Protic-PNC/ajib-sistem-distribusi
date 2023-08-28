@@ -12,16 +12,28 @@
         @foreach ($children as $item)
             <li>
                 <a href="{{ $item['link'] }}"
-                    class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group {{ $isActive($item['link']) ? 'text-white bg-primary-500' : 'text-gray-900 hover:bg-primary-50' }} dark:text-white dark:hover:bg-primary-100">
+                    class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group {{ $matchCurrentRoute($item['link']) ? 'text-white bg-primary-500' : 'text-gray-900 hover:bg-primary-50' }} dark:text-white dark:hover:bg-primary-100">
                     {{ $item['text'] }}
                 </a>
             </li>
         @endforeach
     </ul>
 @else
-    <a href="{{ $link }}"
-        class="flex items-center p-2 text-base font-medium rounded-lg {{ $isActive($link) ? 'text-white bg-primary-500' : 'text-gray-900 hover:bg-primary-50' }} dark:text-white group">
-        @svg('phosphor-' . $icon, 'w-5 h-5 dark:text-white dark:group-hover:text-white ' . ($isActive($link) ? 'text-white group-hover:text-white' : 'text-gray-500 group-hover:text-gray-900'))
+    @php
+        $isActive = $matchCurrentRoute($link);
+    @endphp
+
+    <a
+        {{ $attributes->merge([
+            'wire:navigate' => !$external,
+            'href' => $link,
+            'class' => clsx([
+                'flex items-center p-2 text-base font-medium rounded-lg dark:text-white group',
+                'text-white bg-primary-500' => $isActive,
+                'text-gray-900 hover:bg-primary-50' => !$isActive,
+            ]),
+        ]) }}>
+        @svg('phosphor-' . $icon, clsx(['w-5 h-5 dark:text-white dark:group-hover:text-white', 'text-white group-hover:text-white' => $isActive, 'text-gray-500 group-hover:text-gray-900' => !$isActive]))
         <span class="ml-3">{{ $text }}</span>
     </a>
 @endif

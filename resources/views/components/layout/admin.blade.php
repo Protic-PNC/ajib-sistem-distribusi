@@ -18,7 +18,12 @@
     <link href="https://fonts.bunny.net/css?family=source-sans-pro:300,400,600,700&display=swap" rel="stylesheet" />
 
     {{-- vite resources --}}
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+            initFlowbite()
+        })
+    </script>
 </head>
 
 <body class="antialiased bg-gray-50 dark:bg-gray-900">
@@ -32,9 +37,6 @@
     <main class="p-4 md:ml-64 h-full pt-14 md:pt-20">
         {{ $slot }}
     </main>
-
-    {{-- vite resources --}}
-    @vite('resources/js/app.js')
 </body>
 
 </html>

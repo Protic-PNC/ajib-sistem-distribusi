@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +21,6 @@ Route::middleware('guest.sso')->group(function () {
 });
 
 Route::middleware('auth.sso')->group(function () {
-    Route::get('/dashboard', DashboardController::class)->middleware('auth.sso')->name("dashboard");
+    Route::get('/dashboard', Livewire\Dashboard::class)->name("dashboard");
+    Route::get('/products', Livewire\Products\Index::class)->name('products');
 });
