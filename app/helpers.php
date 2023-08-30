@@ -25,3 +25,11 @@ if (!function_exists("clsx")) {
         return implode(' ', $classNames);
     }
 }
+
+if (!function_exists("formatIdr")) {
+    function formatIdr(int|float $number)
+    {
+        $fmt = NumberFormatter::create("id_ID", NumberFormatter::CURRENCY);
+        return $fmt->format($number);
+    }
+}

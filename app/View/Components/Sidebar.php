@@ -26,27 +26,22 @@ class Sidebar extends Component
                 "link" => route('products', [], false)
             ],
             [
-                "text" => "Messages",
-                "icon" => "envelope-fill",
-                "link" => "/messages"
-            ],
-            [
                 "divider" => true
             ],
-            [
-                "text" => "Authentication",
-                "icon" => "lock-fill",
-                "children" => [
-                    [
-                        "text" => "Sign In",
-                        "link" => "/signin"
-                    ],
-                    [
-                        "text" => "Sign Up",
-                        "link" => "/signup"
-                    ]
-                ]
-            ],
+            // [
+            //     "text" => "Authentication",
+            //     "icon" => "lock-fill",
+            //     "children" => [
+            //         [
+            //             "text" => "Sign In",
+            //             "link" => "/signin"
+            //         ],
+            //         [
+            //             "text" => "Sign Up",
+            //             "link" => "/signup"
+            //         ]
+            //     ]
+            // ],
             [
                 "text" => "Help",
                 "icon" => "lifebuoy-fill",

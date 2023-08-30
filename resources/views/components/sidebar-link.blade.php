@@ -1,5 +1,5 @@
 @if ($divider)
-    <div class="pt-5 mt-5 border-t border-gray-200 dark:border-gray-700"></div>
+    <hr class="border-t border-gray-200 dark:border-gray-700" />
 @elseif (count($children) > 0)
     <button type="button"
         class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-primary-50 dark:text-white dark:hover:bg-primary-500"

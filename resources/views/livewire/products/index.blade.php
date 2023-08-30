@@ -25,7 +25,7 @@
                             {{ $product['name'] }}
                         </td>
                         <td class="px-6 py-3">
-                            {{ $this->formatIDR($product['harga']) }}
+                            {{ formatIdr($product['harga']) }}
                         </td>
                         <td class="px-6 py-3">
                             {{ $product['category']['name'] }}
