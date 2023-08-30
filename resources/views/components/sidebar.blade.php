@@ -15,11 +15,11 @@
         </form>
         <ul class="space-y-2">
             <li>
-                <x-branch-switch />
+                <livewire:branch-switch />
             </li>
             @foreach ($links as $item)
                 <x-sidebar-link :text="$item['text'] ?? null" :link="$item['link'] ?? null" :icon="$item['icon'] ?? null" :divider="isset($item['divider'])"
-                    :children="$item['children'] ?? []" />
+                    :children="$item['children'] ?? []" :external="$item['external'] ?? false" />
             @endforeach
         </ul>
     </div>

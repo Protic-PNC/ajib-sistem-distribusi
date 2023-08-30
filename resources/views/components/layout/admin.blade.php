@@ -20,8 +20,23 @@
     {{-- vite resources --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
+        function ensureBranch() {
+            [...document.querySelectorAll('a')].forEach(a => {
+                const url = new URL(a.href)
+                if (!url.searchParams.has('b') && a.hasAttribute('wire:navigate')) {
+                    url.searchParams.set('b', new URL(window.location).searchParams.get('b'))
+                    a.href = url.toString();
+                }
+            })
+        }
+
         document.addEventListener('livewire:navigated', () => {
-            initFlowbite()
+            initFlowbite();
+            ensureBranch();
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            ensureBranch();
         })
     </script>
 </head>

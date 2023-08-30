@@ -20,7 +20,7 @@ Route::middleware('guest.sso')->group(function () {
     Route::get('/login', LoginController::class)->name("login");
 });
 
-Route::middleware('auth.sso')->group(function () {
+Route::middleware(['auth.sso', 'branch'])->group(function () {
     Route::get('/dashboard', Livewire\Dashboard::class)->name("dashboard");
     Route::get('/products', Livewire\Products\Index::class)->name('products');
 });

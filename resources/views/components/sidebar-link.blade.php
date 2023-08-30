@@ -10,9 +10,18 @@
     </button>
     <ul id="dropdown-{{ $id }}" class="{{ $isChildrenActive() ? 'block' : 'hidden' }} py-2 space-y-2">
         @foreach ($children as $item)
+            @php
+                $isActive = $matchCurrentRoute($item['link']);
+            @endphp
+
             <li>
-                <a href="{{ $item['link'] }}"
-                    class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group {{ $matchCurrentRoute($item['link']) ? 'text-white bg-primary-500' : 'text-gray-900 hover:bg-primary-50' }} dark:text-white dark:hover:bg-primary-100">
+                <a {{ \Illuminate\Support\Arr::get($item, 'external') ? '' : 'wire:navigate' }}
+                    href="{{ $item['link'] }}"
+                    class="{{ clsx([
+                        'flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group dark:text-white dark:hover:bg-primary-100',
+                        'text-white bg-primary-500' => $isActive,
+                        'text-gray-900 hover:bg-primary-50' => !$isActive,
+                    ]) }}">
                     {{ $item['text'] }}
                 </a>
             </li>
@@ -23,9 +32,8 @@
         $isActive = $matchCurrentRoute($link);
     @endphp
 
-    <a
+    <a {{ $external ? '' : 'wire:navigate' }}
         {{ $attributes->merge([
-            'wire:navigate' => !$external,
             'href' => $link,
             'class' => clsx([
                 'flex items-center p-2 text-base font-medium rounded-lg dark:text-white group',

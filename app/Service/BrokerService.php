@@ -19,6 +19,9 @@ class BrokerService
     public const SESSION_USER_KEY = 'sso_user';
     public const SCOPE = ["view-user"];
 
+    public const SESSION_BRANCH_KEY = 'branch';
+    public const SESSION_BRANCHES_KEY = 'branches';
+
     function __construct()
     {
         $this->serverUrl = env('SSO_SERVER', '');
@@ -34,12 +37,14 @@ class BrokerService
     /**
      * Generate request url.
      *
-     * @param string $command
-     * @param array $parameters
+     * @param string $path
+     * @param string $method
+     * @param mixed $data
+     * @param bool $token
      *
-     * @return string
+     * @return mixed
      */
-    protected function request(string $path, string $method = "GET", mixed $data = [], $token = true)
+    public function request(string $path, string $method = "GET", mixed $data = [], $token = true)
     {
         $token = $this->getToken();
 
@@ -168,5 +173,31 @@ class BrokerService
         request()->session()->remove(BrokerService::SESSION_USER_KEY);
 
         return redirect(route('home'));
+    }
+
+    public function setCurrentBranch(mixed $branch)
+    {
+        request()->session()->put(
+            BrokerService::SESSION_BRANCH_KEY,
+            $branch
+        );
+    }
+
+    public function getCurrentBranch()
+    {
+        return request()->session()->get(BrokerService::SESSION_BRANCH_KEY);
+    }
+
+    public function getLocalBranches()
+    {
+        return collect(request()->session()->get(BrokerService::SESSION_BRANCHES_KEY, []));
+    }
+
+    public function setLocalBranches(array $branches)
+    {
+        request()->session()->put(
+            BrokerService::SESSION_BRANCHES_KEY,
+            $branches
+        );
     }
 }
