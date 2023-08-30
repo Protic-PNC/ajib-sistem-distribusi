@@ -27,7 +27,8 @@ class Branch
 
         $branchCode = $request->query('b');
         if (empty($branchCode) || !$branches->containsStrict("code", $branchCode)) {
-            $branch = $branches->first();
+            // if current branch is already set on session then use otherwise use first branch from array
+            $branch = $this->brokerService->getCurrentBranch() ?? $branches->first();
             $request->query->set("b", $branch["code"]);
             $this->brokerService->setCurrentBranch($branch);
 
